@@ -3,9 +3,8 @@ from logging.handlers import RotatingFileHandler
 import os
 import sys
 
-from mmpy_bot.bot import Bot
-
-from bff import Driver
+from bff.api import Connection
+from bff.storage import load
 
 
 logger = logging.getLogger(__name__)
@@ -28,5 +27,4 @@ logging.basicConfig(format="%(asctime)s %(message)s", datefmt="%d.%m.%Y %H:%M:%S
 sys.excepthook = log_exception
 logger.info("start bot")
 
-Driver.create_instance()
-Bot().run()
+Connection(load("settings.json")).start()
