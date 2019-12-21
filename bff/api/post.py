@@ -10,6 +10,7 @@ class Post:
         self._thread = None
         self._root = None
         self._files = None
+        self._user = None
     
     @classmethod
     def post(cls, channel, message, root_post=None, files=[]):
@@ -22,7 +23,7 @@ class Post:
         return cls(**api.posts.create_post(options))
     
     @classmethod
-    def ephemeral_post(cls, user, channel, message):
+    def post_ephemeral(cls, user, channel, message):
         options={"user_id": user.id,
                  "post": {"channel_id": channel.id, 
                           "message": message}}
@@ -58,7 +59,18 @@ class Post:
         if not self._files:
             self._files = [api.File(**attrs) for attrs in api.posts.get_file_info_for_post(self.id)]
         return self._files
-
+    
+    @property
+    def user(self):
+        if not self._user:
+            self._user = api.User.by_id(self._user_id)
+        return self._user
+    
+    def reply(self, message, files=[]):
+        return Post.post(self.channel, message, root_post=self, files=files)
+    
+    def reply_ephemeral(self, message):
+        return Post.post_ephemeral(self.user, self.channel, message)
 
 class Thread:
     def __init__(self, posts):

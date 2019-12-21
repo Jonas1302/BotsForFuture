@@ -10,5 +10,5 @@ BOT_TEAM = settings["team"] if "team" in settings else None
 BOT_LOGIN = settings["login_id"]
 BOT_PASSWORD = settings["password"]
 BOT_TOKEN = settings["token"]
-PLUGINS = plugin_paths
+PLUGINS = ["bff.tasks"]
 WORKERS_NUM = 1

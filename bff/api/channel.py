@@ -15,7 +15,7 @@ class Channel:
     
     @classmethod
     def by_id(cls, id_):
-        return [cls(**api.channels.get_channel(id_))]
+        return cls(**api.channels.get_channel(id_))
     
     @classmethod
     def by_team_and_name(cls, team, name):

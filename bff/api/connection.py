@@ -1,38 +1,29 @@
 import logging
 from mattermostdriver import Driver
-import os
-import sys
 
 from bff import api
-from . import mmpy_bot_settings
+from mmpy_bot.bot import Bot
 
 logger = logging.getLogger(__name__)
 
 
 class Connection:
+    """
+    This class allows the user to connect to a Mattermost server and start the bot.
+    
+    There should be only one instance per program."""
+    
     instance = None
     
     def __init__(self, settings):
         assert Connection.instance is None
         self.driver = Driver(settings)
-        self._load_bot(settings)
+        self.bot = Bot()
         Connection.instance = self
     
     def __getattr__(self, name):
         return getattr(self.driver, name)
     
-    def _load_bot(self, settings):
-        # We cannot use a settings dict for mmpy_bot directly,
-        # instead, we must use a settings module.
-        # So we add the settings to the global namespace of this module
-        # and use this module as settings module by setting an environment variable.
-        # Yes, this is ugly!
-        os.environ["MATTERMOST_BOT_SETTINGS_MODULE"] = "mmpy_bot_settings"
-        sys.path.insert(0, os.path.dirname(__file__))
-        
-        # now we can load our bot
-        from mmpy_bot.bot import Bot
-        self.bot = Bot()
     
     def start(self):
         logger.info("Conenction.start")
@@ -54,12 +45,3 @@ class Connection:
     
     def __exit__(self, type, value, tb):
         self.stop()
-    
-
-class MattermostLogHandler(logging.Handler):
-    def __init__(self, channel):
-        self.channel = channel
-    
-    def emit(self, record):
-        message = self.format(record)
-        api.Post.post(self.channel, message)

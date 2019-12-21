@@ -5,7 +5,7 @@ from os.path import expanduser
 
 
 logger = logging.getLogger(__name__)
-save_dir = os.path.join(expanduser("~"), "botsforfuture")
+save_dir = os.path.join(expanduser("~"), ".botsforfuture")
 
 
 def save(filename, **values):
