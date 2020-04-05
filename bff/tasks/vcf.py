@@ -43,9 +43,6 @@ class VCF:
         else:
             self.string += f"TEL:{number}\n"
 
-@respond_to("*")
-def echo(message):
-    message.reply_thread(message.get_message())
 
 @respond_to("vcf ([\S]*)")
 @respond_to("contacts ([\S]*)")

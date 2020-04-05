@@ -18,22 +18,24 @@ class Connection:
     def __init__(self, settings):
         assert Connection.instance is None
         self.driver = Driver(settings)
+        #self.driver.client.activate_verbose_logging()
         self.bot = Bot()
         Connection.instance = self
     
     def __getattr__(self, name):
         return getattr(self.driver, name)
     
-    
-    def start(self):
-        logger.info("Conenction.start")
+    def login(self):
+        logger.info("login...")
         self.driver.login()
-        logger.info("logged in with mattermostdriver")
         self.me = api.User.by_id(self.driver.client.userid)
         logger.info(f"logged in as {self.me}")
-        
+    
+    def start(self):
         # start bot at the end because the method will not return unless an exception occurs
+        logger.info("start bot...")
         self.bot.run()
+        logger.info("bot started")
     
     def stop(self):
         self.driver.logout()
