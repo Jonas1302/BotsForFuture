@@ -48,7 +48,7 @@ settings = load("settings.json")
 connection = Connection(settings)
 connection.login()
 
-if "log-channel" in settings:
+if "log-channel" in settings and settings["log-channel"]:
     mattermost_log_handler = MattermostLogHandler(settings["log-channel"])
     mattermost_log_handler.setLevel(logging.INFO)
     mattermost_log_handler.setFormatter(formatter)

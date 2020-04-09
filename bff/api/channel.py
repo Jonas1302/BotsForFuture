@@ -28,12 +28,20 @@ class Channel:
 	
 	@classmethod
 	def by_team_and_name(cls, team, name):
-		return cls(**api.channels.get_channel_by_name(team.id, name))
+		if name.startswith("~"):
+			name = name[1:]
+		if isinstance(team, api.Team):
+			return cls(**api.channels.get_channel_by_name(team.id, name))
+		return cls(**api.channels.get_channel_by_name_and_team_name(team, name))
 	
 	@classmethod
 	def by_name(cls, name):
-		logger.warn("using Channel.by_name is discouraged, user Channel.by_team_and_name instead")
-		return cls.by_team_and_name(api.me.team, name)
+		if "/" in name:
+			return cls.by_team_and_name(*name.split("/"))
+		else:
+			logger.warn("using Channel.by_name with channel name only is discouraged, "\
+			   "pass 'team_name/channel_name' as argument or use Channel.by_team_and_name instead")
+			return cls.by_team_and_name(api.me.team, name)
 	
 	@classmethod
 	def by_user(cls, user):

@@ -11,14 +11,9 @@ class MattermostLogHandler(logging.Handler):
     
     def __init__(self, channel):
         super().__init__()
-        if channel.startswith("~"):
-            self.channel = api.Channel.by_name(channel[1:])
-        elif channel.startswith("@"):
-            raise NotImplementedError
-        else:
-            raise Exception(f"""unknown log channel {channel}: prefix channel
-                            with '~' (or '@' if it's a direct channel to a user)
-                            and make sure the bot is in this channel""")
+        if channel.startswith("@"):
+            self.channel = api.Channel.by_user(api.User.by_name(channel))
+        self.channel = api.Channel.by_name(channel)
     
     def emit(self, record):
         message = self.format(record)
