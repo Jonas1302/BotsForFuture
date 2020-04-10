@@ -16,13 +16,21 @@ class Post:
 		self._files = None
 		self._user = None
 	
+	def __eq__(self, other):
+		if not isinstance(other, Post):
+			return False
+		return self.id == other.id
+	
+	def __hash__(self):
+		return hash(self.id)
+	
 	@classmethod
 	def post(cls, target, message, root_post=None, files=[]):
 		assert len(files) <= 5, "only 5 files are allowed per post"
 		if isinstance(target, api.User):
 			channel = api.Channel.by_user(target)
 		elif isinstance(target, (list, set, tuple)):
-			if len(target) == 1:
+			if len(target) == 1 or (len(target) == 2 and api.me in target):
 				channel = api.Channel.by_user(*target)
 			else:
 				channel = api.Channel.by_users(*target)

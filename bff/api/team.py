@@ -7,6 +7,14 @@ class Team:
 		self.__dict__.update(kwargs)
 		self._channels = None
 	
+	def __eq__(self, other):
+		if not isinstance(other, Team):
+			return False
+		return self.id == other.id
+	
+	def __hash__(self):
+		return hash(self.id)
+	
 	@classmethod
 	def by_id(cls, id_):
 		return cls(**api.teams.get_team(id_))

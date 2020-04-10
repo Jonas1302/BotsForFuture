@@ -22,6 +22,9 @@ class Channel:
 			return False
 		return self.id == other.id
 	
+	def __hash__(self):
+		return hash(self.id)
+	
 	@classmethod
 	def by_id(cls, id_):
 		return cls(**api.channels.get_channel(id_))

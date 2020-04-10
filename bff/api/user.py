@@ -19,6 +19,9 @@ class User:
 			return False
 		return self.id == other.id
 	
+	def __hash__(self):
+		return hash(self.id)
+	
 	@classmethod
 	def get_users(cls):
 		"""Return a list of all `User`s"""
