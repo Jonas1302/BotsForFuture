@@ -19,17 +19,17 @@ stream_handler = logging.StreamHandler(sys.stdout)
 stream_handler.setFormatter(formatter)
 
 logging.basicConfig(format="%(asctime)s %(message)s", datefmt="%d.%m.%Y %H:%M:%S",
-                    level=logging.INFO, handlers=[stream_handler, file_handler])
+					level=logging.INFO, handlers=[stream_handler, file_handler])
 
 logger = logging.getLogger(__name__)
 
 def log_exception(exc_type, exc_value, exc_traceback):
-    """Log all exceptions (except `KeyboardInterrupt`)"""
-    if issubclass(exc_type, KeyboardInterrupt):
-        logger.info("Received KeyboardInterrupt")
-        sys.__excepthook__(exc_type, exc_value, exc_traceback)
-        return
-    logger.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
+	"""Log all exceptions (except `KeyboardInterrupt`)"""
+	if issubclass(exc_type, KeyboardInterrupt):
+		logger.info("Received KeyboardInterrupt")
+		sys.__excepthook__(exc_type, exc_value, exc_traceback)
+		return
+	logger.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
 
 sys.excepthook = log_exception
 
@@ -49,9 +49,9 @@ connection = Connection(settings)
 connection.login()
 
 if "log-channel" in settings and settings["log-channel"]:
-    mattermost_log_handler = MattermostLogHandler(settings["log-channel"])
-    mattermost_log_handler.setLevel(logging.INFO)
-    mattermost_log_handler.setFormatter(formatter)
-    logging.getLogger().addHandler(mattermost_log_handler)
+	mattermost_log_handler = MattermostLogHandler(settings["log-channel"])
+	mattermost_log_handler.setLevel(logging.INFO)
+	mattermost_log_handler.setFormatter(formatter)
+	logging.getLogger().addHandler(mattermost_log_handler)
 
 connection.start()

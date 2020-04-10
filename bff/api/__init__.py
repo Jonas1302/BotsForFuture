@@ -8,4 +8,4 @@ from mmpy_bot.bot import respond_to, listen_to
 
 
 def __getattr__(name):
-    return getattr(Connection.instance, name)
+	return getattr(Connection.instance, name)
