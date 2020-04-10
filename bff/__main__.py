@@ -50,7 +50,7 @@ connection.login()
 
 if "log-channel" in settings and settings["log-channel"]:
 	mattermost_log_handler = MattermostLogHandler(settings["log-channel"])
-	mattermost_log_handler.setLevel(logging.INFO)
+	mattermost_log_handler.setLevel(logging.ERROR)
 	mattermost_log_handler.setFormatter(formatter)
 	logging.getLogger().addHandler(mattermost_log_handler)
 

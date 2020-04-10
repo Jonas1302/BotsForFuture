@@ -53,11 +53,11 @@ def get_vcf(message):
 	
 	for user in users:
 		if not user.position:
-			logger.info(f"{user.name} has not provided a phone number")
+			logger.debug(f"{user.name} has not provided a phone number")
 			continue
 		
 		if not valid_mobile_phone_number.match(user.position):
-			logger.info(f"{user.name} had an invalid phone number: {user.position}")
+			logger.debug(f"{user.name} had an invalid phone number: {user.position}")
 			continue
 		
 		vcf.add_display_name(user.name)
