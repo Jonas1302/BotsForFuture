@@ -1,0 +1,11 @@
+{
+    "url": "",
+    "login_id": "",
+    "password": "",
+    "token": "",
+    "scheme": "https",
+	"port": 443,
+    "basepath": "/api/v4",
+	"log-channel": "",
+	"modules": []
+}
