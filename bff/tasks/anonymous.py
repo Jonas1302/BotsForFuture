@@ -2,9 +2,17 @@ import logging
 import re
 
 from bff.api import User, Channel, Post, listen_to, respond_to, convert_to_post, me
+from bff.settings import settings
+from bff.exceptions import DoNotLoadModuleException
 from bff import storage
 
 logger = logging.getLogger(__name__)
+
+
+# check if this module shall be loaded
+if settings["modules"] and __name__ not in settings["modules"]:
+	logger.info(f"{__name__} shall not be loaded")
+	raise DoNotLoadModuleException(__name__)
 
 
 regex = "\\A(@\\S+)" + "( @\\S+)?" * 6 + ".+\\Z"

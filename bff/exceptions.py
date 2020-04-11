@@ -1,0 +1,3 @@
+
+class DoNotLoadModuleException(Exception):
+	pass

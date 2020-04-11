@@ -1,9 +1,12 @@
+import argparse
 import logging
 from logging.handlers import RotatingFileHandler
 import os
 import sys
 
 from bff.storage import load, save_dir
+from bff.exceptions import DoNotLoadModuleException
+import bff.settings
 
 
 # set up logging
@@ -24,14 +27,31 @@ logging.basicConfig(format="%(asctime)s %(message)s", datefmt="%d.%m.%Y %H:%M:%S
 logger = logging.getLogger(__name__)
 
 def log_exception(exc_type, exc_value, exc_traceback):
-	"""Log all exceptions (except `KeyboardInterrupt`)"""
-	if issubclass(exc_type, KeyboardInterrupt):
+	"""log most exceptions"""
+	if issubclass(exc_type, DoNotLoadModuleException):
+		logger.info("DoNotLoadModuleException")
+	elif issubclass(exc_type, KeyboardInterrupt):
 		logger.info("Received KeyboardInterrupt")
 		sys.__excepthook__(exc_type, exc_value, exc_traceback)
-		return
-	logger.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
+	else:
+		logger.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
 
 sys.excepthook = log_exception
+
+
+# set up cli args parser
+parser = argparse.ArgumentParser()
+parser.add_argument("--modules", nargs="+", help="only load specific modules")
+parser.add_argument("--token", help="use this access token instead of the one specified in settings.json")
+args = parser.parse_args()
+
+logger.info(f"run with cli arguments: {args}")
+
+if args.modules:
+	bff.settings.settings["modules"] = args.modules
+if args.token:
+	bff.settings.settings["token"] = args.token
+settings = bff.settings.settings
 
 
 logger.info("start")
@@ -44,7 +64,6 @@ logger.info("start")
 os.environ["MATTERMOST_BOT_SETTINGS_MODULE"] = "bff.api.mmpy_bot_settings"
 sys.path.insert(0, os.path.dirname(__file__))
 from bff.api import Connection, MattermostLogHandler, Channel
-settings = load("settings.json")
 connection = Connection(settings)
 connection.login()
 

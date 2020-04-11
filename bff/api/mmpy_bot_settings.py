@@ -1,8 +1,6 @@
 """This module is used as settings module for mmpy_bot"""
 
-from bff.storage import load
-
-settings = load("settings.json")
+from bff.settings import settings
 
 BOT_URL = "{scheme}://{url}{basepath}".format(**settings)
 BOT_TEAM = settings["team"] if "team" in settings else None
