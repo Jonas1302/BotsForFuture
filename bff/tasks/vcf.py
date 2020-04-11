@@ -1,6 +1,7 @@
 import logging
 import re
-from bff.api import User, respond_to
+from bff.api import User, respond_to, convert_to_post
+from .utils import targets_to_users
 
 logger = logging.getLogger(__name__)
 
@@ -10,6 +11,8 @@ valid_mobile_phone_number = re.compile("^(0|(\\+49( )?)|(0049( )?))1[0-9 ]+$")
 class VCF:
 	def __init__(self):
 		self.string = "BEGIN:VCARD\n"
+		self.display_name_set = False
+		self.name_set = False
 	
 	def finalize(self):
 		# check if `next_contact` was the latest method called
@@ -17,22 +20,22 @@ class VCF:
 		if self.string.endswith("\nBEGIN:VCARD\n"):
 			return self.string.rsplit("\nBEGIN:VCARD\n", 1)[0]
 		
-		assert self.n and self.fn
+		assert self.display_name_set and self.name_set
 		return self.string + "END:VCARD"
 	
 	def next_contact(self):
 		assert self.n and self.fn
 		self.string += "END:VCARD\nBEGIN:VCARD\n"
-		self.fn = False
-		self.n = False
+		self.display_name_set = False
+		self.name_set = False
 	
 	def add_display_name(self, display_name):
 		self.string += f"FN:{display_name}\n"
-		self.fn = True
+		self.display_name_set = True
 	
 	def add_name(self, forename, surname=None):
 		self.string += f"N:{surname if surname else ''};{forename};;;\n"
-		self.n = True
+		self.name_set = True
 	
 	def add_email(self, email):
 		self.string += f"EMAIL:{email}\n"
@@ -44,11 +47,14 @@ class VCF:
 			self.string += f"TEL:{number}\n"
 
 
-@respond_to("vcf ([\S]*)")
-@respond_to("contacts ([\S]*)")
-def get_vcf(message):
+@respond_to("^(?i)vcf$")
+@respond_to("^(?i)kontakte$")
+@respond_to("^(?i)vcf (.*)$")
+@respond_to("^(?i)kontakte (.*)$")
+@convert_to_post
+def get_vcf(post, target_list=None):
 	# TODO insert suffix
-	users = User.get_users()
+	users = targets_to_users(post, target_list)
 	vcf = VCF()
 	
 	for user in users:

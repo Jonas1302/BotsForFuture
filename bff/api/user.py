@@ -24,9 +24,10 @@ class User:
 	
 	@classmethod
 	def get_users(cls):
-		"""Return a list of all `User`s"""
+		"""Return a list of all `User`s except bots"""
 		return [User(**attrs) for attrs
-				in api.users.get_users(params={"page": 0, "per_page": 1<<12})]
+				in api.users.get_users(params={"page": 0, "per_page": 1<<12})
+				if not "is_bot" in attrs or not attrs["is_bot"]]
 	
 	@classmethod
 	def by_name(cls, name):
@@ -64,4 +65,10 @@ class User:
 		if not self._channels:
 			self._channels = [api.Channel(**attrs) for attrs in api.channels.get_channels_for_user(self.id, self.team.id)]
 		return self._channels
+	
+	@property
+	def is_bot(self):
+		if "is_bot" in self.__dict__:
+			return self.__dict__["is_bot"]
+		return False
 	
