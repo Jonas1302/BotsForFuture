@@ -2,7 +2,7 @@
 
 from bff.settings import settings
 
-BOT_URL = "{scheme}://{url}{basepath}".format(**settings)
+BOT_URL = "{scheme}://{url}:{port}{basepath}".format(**settings)
 BOT_TEAM = settings["team"] if "team" in settings else None
 BOT_LOGIN = settings["login_id"]
 BOT_PASSWORD = settings["password"]
