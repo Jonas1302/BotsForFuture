@@ -1,5 +1,6 @@
 import logging
 from mattermostdriver import Driver
+import sys
 
 from bff import api
 from mmpy_bot.bot import Bot
@@ -21,6 +22,10 @@ class Connection:
 		#self.driver.client.activate_verbose_logging()
 		self.bot = Bot()
 		Connection.instance = self
+		
+		# workaround for python versions < 3.7
+		if sys.version_info.major < 3 or sys.version_info.minor < 7:
+			api.load_driver_attributes()
 	
 	def __getattr__(self, name):
 		return getattr(self.driver, name)
