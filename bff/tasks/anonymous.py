@@ -15,7 +15,7 @@ if settings["modules"] and __name__ not in settings["modules"]:
 	raise DoNotLoadModuleException(__name__)
 
 
-regex = "\\A(@\\S+)" + "( @\\S+)?" * 6 + ".+\\Z"
+regex = "\\A(@\\S+)" + "( @\\S+)?" * 6 + ".*\\Z"
 
 undefined_default_target_message = \
 	"Scheinbar stimmt hier was mit den Einstellungen nicht!\n" \
