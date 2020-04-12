@@ -33,7 +33,7 @@ class Connection:
 	def login(self):
 		logger.info("login...")
 		self.driver.login()
-		self.me = api.User.by_id(self.driver.client.userid)
+		api.me = api.User.by_id(self.driver.client.userid)
 		logger.info(f"logged in as {self.me}")
 	
 	def start(self):
