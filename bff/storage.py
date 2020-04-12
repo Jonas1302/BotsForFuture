@@ -11,7 +11,7 @@ storage_dir = os.path.join(save_dir, "data")
 
 def _create_missing_dirs(path):
 	if not os.path.exists(path):
-		os.path.mkdirs(path)
+		os.mkdirs(path)
 
 _create_missing_dirs(save_dir)
 _create_missing_dirs(storage_dir)
