@@ -57,7 +57,7 @@ class Storage:
 	def save(self):
 		"""Save all data on the disk"""
 		with open(self.__path, "w") as f:
-			json.dump(self.__data, f)
+			json.dump(self.__data, f, indent="\t")
 
 def load(path):
 	"""Load a json file and return it as dict"""
@@ -67,4 +67,4 @@ def load(path):
 def save(path, data):
 	"""Save all data on the disk as json file"""
 	with open(os.path.join(save_dir, path), "w") as f:
-		json.dump(data, f)
+		json.dump(data, f, indent="\t")
