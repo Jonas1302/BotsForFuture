@@ -18,6 +18,7 @@ def load_driver_attributes():
 	global posts
 	global teams
 	global users
+	global me
 	
 	connection = Connection.instance
 	channels = connection.channels
@@ -25,4 +26,5 @@ def load_driver_attributes():
 	posts = connection.posts
 	teams = connection.teams
 	users = connection.users
+	me = None  # is set later in Connection after logging in
 	
