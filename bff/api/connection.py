@@ -34,7 +34,7 @@ class Connection:
 		logger.info("login...")
 		self.driver.login()
 		api.me = api.User.by_id(self.driver.client.userid)
-		logger.info(f"logged in as {self.me}")
+		logger.info(f"logged in as {api.me}")
 	
 	def start(self):
 		# start bot at the end because the method will not return unless an exception occurs
