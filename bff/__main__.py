@@ -4,9 +4,9 @@ from logging.handlers import RotatingFileHandler
 import os
 import sys
 
-from bff.api import Connection, MattermostLogHandler, Channel
+from bff.api import Connection, MattermostLogHandler
 from bff.exceptions import DoNotLoadModuleException
-from bff.storage import load, save_dir
+from bff.storage import save_dir
 import bff.settings
 
 
@@ -53,6 +53,7 @@ if args.modules:
 if args.token:
 	bff.settings.settings["token"] = args.token
 settings = bff.settings.settings
+
 
 # start bot
 logger.info("start bot")
