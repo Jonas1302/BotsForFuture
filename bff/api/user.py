@@ -62,8 +62,9 @@ class User:
 	
 	@property
 	def channels(self):
-		if not self._channels:
-			self._channels = [api.Channel(**attrs) for attrs in api.channels.get_channels_for_user(self.id, self.team.id)]
+		# update always if user joined new channel
+		#if not self._channels:
+		self._channels = [api.Channel(**attrs) for attrs in api.channels.get_channels_for_user(self.id, self.team.id)]
 		return self._channels
 	
 	@property

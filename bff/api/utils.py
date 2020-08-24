@@ -1,9 +1,7 @@
 import logging
-
 from bff import api
 
-
-logger = logging.getLogger(__name__)
+#logger = logging.getLogger(__name__)
 
 
 class MattermostLogHandler(logging.Handler):
@@ -23,5 +21,11 @@ class MattermostLogHandler(logging.Handler):
 
 def convert_to_post(func):
 	def wrapper(message, *args, **kwargs):
-		return func(api.Post.by_id(message._body["data"]["post"]["id"]), *args, **kwargs)
+		return func(api.Post(**message._body["data"]["post"]), *args, **kwargs)
+	return wrapper
+
+def convert_to_reaction(func):
+	def wrapper(message, *args, **kwargs):
+		#logger.info(f"{message=}; {args=}; {kwargs=}")
+		return func(api.Reaction(**message._body["data"]["reaction"]), *args, **kwargs)
 	return wrapper

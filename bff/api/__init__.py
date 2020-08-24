@@ -1,10 +1,11 @@
 from .connection import Connection
 from .channel import Channel
 from .post import Post
+from .reaction import Reaction
 from .team import Team
 from .user import User
-from .utils import MattermostLogHandler, convert_to_post
-from mmpy_bot.bot import respond_to, listen_to
+from .utils import MattermostLogHandler, convert_to_post, convert_to_reaction
+from mmpy_bot.bot import respond_to, listen_to, post_edited, post_deleted, reaction_added, reaction_removed, at_start
 
 
 def __getattr__(name):

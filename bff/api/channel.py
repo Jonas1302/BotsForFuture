@@ -65,3 +65,6 @@ class Channel:
 	def users(self):
 		return [api.User.by_id(attrs["user_id"]) for attrs in
 				api.channels.get_channel_members(self.id, params={"page": 0, "per_page": 1<<10})]
+	
+	def post(self, message, root_post=None, files=[]):
+		return api.Post.post(self, message, root_post, files)
