@@ -3,6 +3,7 @@ from mattermostdriver import Driver
 import sys
 
 from bff import api
+from bff.settings import convert_to_mmpy_bot
 from mmpy_bot.bot import Bot
 
 logger = logging.getLogger(__name__)
@@ -20,7 +21,7 @@ class Connection:
 		assert Connection.instance is None
 		self.driver = Driver(settings)
 		#self.driver.client.activate_verbose_logging()
-		self.bot = Bot()
+		self.bot = Bot(convert_to_mmpy_bot(settings))
 		Connection.instance = self
 		
 		# workaround for python versions < 3.7

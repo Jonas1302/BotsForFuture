@@ -4,8 +4,9 @@ from logging.handlers import RotatingFileHandler
 import os
 import sys
 
-from bff.storage import load, save_dir
+from bff.api import Connection, MattermostLogHandler, Channel
 from bff.exceptions import DoNotLoadModuleException
+from bff.storage import load, save_dir
 import bff.settings
 
 
@@ -53,17 +54,8 @@ if args.token:
 	bff.settings.settings["token"] = args.token
 settings = bff.settings.settings
 
-
-logger.info("start")
-# Set settings for mmpy_bot before importings anything from api!
-# We cannot use a settings dict for mmpy_bot directly, instead, we must use a settings module.
-# So we add the settings to the global namespace of this module
-# and use this module as settings module by setting an environment variable.
-# Yes, this is ugly! Maybe we can omit this if we move the mmpy_bot_settings.py file
-# to the root of our project?
-os.environ["MATTERMOST_BOT_SETTINGS_MODULE"] = "bff.api.mmpy_bot_settings"
-sys.path.insert(0, os.path.dirname(__file__))
-from bff.api import Connection, MattermostLogHandler, Channel
+# start bot
+logger.info("start bot")
 connection = Connection(settings)
 connection.login()
 

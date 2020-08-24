@@ -8,6 +8,7 @@ from .utils import MattermostLogHandler, convert_to_post, convert_to_reaction
 from mmpy_bot.bot import respond_to, listen_to, post_edited, post_deleted, reaction_added, reaction_removed, at_start
 
 
+# used by the modules in this package to access the old API
 def __getattr__(name):
 	return getattr(Connection.instance, name)
 
