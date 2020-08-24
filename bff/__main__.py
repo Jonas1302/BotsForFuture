@@ -46,7 +46,8 @@ parser.add_argument("--modules", nargs="+", help="only load specific modules")
 parser.add_argument("--token", help="use this access token instead of the one specified in settings.json")
 args = parser.parse_args()
 
-logger.info(f"run with cli arguments: {args}")
+if args.modules:
+	logger.info(f"run with modules: {args.modules}")
 
 if args.modules:
 	bff.settings.settings["modules"] = args.modules
